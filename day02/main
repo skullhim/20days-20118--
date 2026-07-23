@@ -1,1 +1,58 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <string.h>
+#include <stdbool.h>
+#include <ctype.h>
 
+int main()
+{
+    // 원본 문자열을 저장할 배열
+    char word[100];
+
+    // 공백을 제거하고 소문자로 변환한 문자열을 저장할 배열
+    char temp[100];
+
+    // 문자열 길이를 저장할 변수
+    int length = 0;
+
+    // 회문 여부를 저장하는 변수 (처음에는 회문이라고 가정)
+    bool isPalindrome = true;
+
+    // 문자열 입력
+    printf("문장을 입력하세요: ");
+    fgets(word, sizeof(word), stdin);
+
+    // 공백과 줄바꿈을 제거하고 대문자를 소문자로 변환
+    for (int i = 0; word[i] != '\0'; i++)
+    {
+        // 공백(' ')과 줄바꿈('\n')은 제외
+        if (word[i] != ' ' && word[i] != '\n')
+        {
+            // 소문자로 변환하여 새로운 배열에 저장
+            temp[length] = tolower(word[i]);
+            length++;
+        }
+    }
+
+    // 문자열의 끝 표시
+    temp[length] = '\0';
+
+    // 앞 문자와 뒤 문자를 비교하여 회문인지 검사
+    for (int i = 0; i < length / 2; i++)
+    {
+        // 하나라도 다르면 회문이 아님
+        if (temp[i] != temp[length - 1 - i])
+        {
+            isPalindrome = false;
+            break;
+        }
+    }
+
+    // 결과 출력
+    if (isPalindrome)
+        printf("회문입니다.\n");
+    else
+        printf("회문이 아닙니다.\n");
+
+    return 0;
+}
