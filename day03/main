@@ -1,0 +1,111 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+// 재귀 팩토리얼
+int factorialRecursive(int n)
+{
+    // 종료 조건(Base Case)
+    // n이 0이면 더 이상 함수를 호출하지 않고 1을 반환
+    if (n == 0)
+        return 1;
+
+    // n * (n-1)! 을 계산하기 위해 자기 자신을 다시 호출
+    return n * factorialRecursive(n - 1);
+}
+
+// 반복 팩토리얼
+int factorialLoop(int n)
+{
+    // 곱셈 결과를 저장할 변수
+    int result = 1;
+
+    // 1부터 n까지 차례대로 곱하기
+    for (int i = 1; i <= n; i++)
+    {
+        result *= i;      // result = result * i
+    }
+
+    // 계산된 팩토리얼 반환
+    return result;
+}
+
+// 재귀 피보나치
+int fibonacciRecursive(int n)
+{
+    // 종료 조건
+    // 첫 번째 피보나치 수
+    if (n == 0)
+        return 0;
+
+    // 두 번째 피보나치 수
+    if (n == 1)
+        return 1;
+
+    // 이전 두 값을 더하기 위해 자기 자신을 두 번 호출
+    return fibonacciRecursive(n - 1) + fibonacciRecursive(n - 2);
+}
+
+// 반복 피보나치
+int fibonacciLoop(int n)
+{
+    // n이 0이면 0 반환
+    if (n == 0)
+        return 0;
+
+    // n이 1이면 1 반환
+    if (n == 1)
+        return 1;
+
+    // 첫 번째와 두 번째 피보나치 수 저장
+    int first = 0;
+    int second = 1;
+
+    // 새로 계산되는 피보나치 수를 저장
+    int next;
+
+    // 2번째부터 n번째까지 반복하면서 계산
+    for (int i = 2; i <= n; i++)
+    {
+        // 이전 두 수를 더해서 다음 수 계산
+        next = first + second;
+
+        // 값을 한 칸씩 앞으로 이동
+        first = second;
+        second = next;
+    }
+
+    // n번째 피보나치 수 반환
+    return second;
+}
+
+// 메인 함수
+int main()
+{
+    // 입력받을 정수
+    int n;
+
+    // 사용자에게 입력 안내
+    printf("정수를 입력하세요 : ");
+    scanf("%d", &n);
+
+    // 음수는 계산하지 않음
+    if (n < 0)
+    {
+        printf("음수는 계산할 수 없습니다.\n");
+        return 0;
+    }
+
+    // 재귀 방식 팩토리얼 출력
+    printf("재귀 팩토리얼 : %d\n", factorialRecursive(n));
+
+    // 반복 방식 팩토리얼 출력
+    printf("반복 팩토리얼 : %d\n", factorialLoop(n));
+
+    // 재귀 방식 피보나치 출력
+    printf("재귀 피보나치 : %d\n", fibonacciRecursive(n));
+
+    // 반복 방식 피보나치 출력
+    printf("반복 피보나치 : %d\n", fibonacciLoop(n));
+
+    return 0;
+}
