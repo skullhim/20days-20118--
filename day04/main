@@ -1,0 +1,71 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+// 학생 정보를 저장하기 위한 구조체
+struct Student
+{
+    char name[30];   // 학생 이름
+    int score;       // 학생 점수
+};
+
+int main()
+{
+    // 학생 수를 저장할 변수
+    int N;
+
+    // 학생 수 입력
+    printf("학생 수를 입력하세요 : ");
+    scanf("%d", &N);
+
+    // 학생 정보를 저장할 구조체 배열
+    struct Student students[100];
+
+    // 학생 정보 입력
+    for (int i = 0; i < N; i++)
+    {
+        printf("\n%d번째 학생\n", i + 1);
+
+        // 학생 이름 입력
+        printf("이름 : ");
+        scanf("%s", students[i].name);
+
+        // 학생 점수 입력
+        printf("점수 : ");
+        scanf("%d", &students[i].score);
+    }
+
+    // 점수를 기준으로 내림차순 정렬
+    // 버블 정렬 사용
+    for (int i = 0; i < N - 1; i++)
+    {
+        // 아직 정렬되지 않은 부분을 비교
+        for (int j = 0; j < N - 1 - i; j++)
+        {
+            // 앞 학생의 점수가 뒤 학생보다 작으면 자리 교환
+            if (students[j].score < students[j + 1].score)
+            {
+                // 구조체 전체를 임시 변수에 저장
+                struct Student temp = students[j];
+
+                // 뒤 학생을 앞으로 이동
+                students[j] = students[j + 1];
+
+                // 임시 변수에 저장했던 학생을 뒤로 이동
+                students[j + 1] = temp;
+            }
+        }
+    }
+
+    // 결과 출력
+    printf("\n===== 점수 순 정렬 결과 =====\n");
+
+    for (int i = 0; i < N; i++)
+    {
+        printf("%d등 : %s (%d점)\n",
+               i + 1,
+               students[i].name,
+               students[i].score);
+    }
+
+    return 0;
+}
