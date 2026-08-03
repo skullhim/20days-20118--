@@ -1,0 +1,115 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdbool.h>
+
+#define MAX 100
+
+// 미로 읽기 함수
+bool readMazeFromFile(char maze[MAX][MAX], int* row, int* col)
+{
+    FILE* fp;
+
+    // 시작점과 도착점의 개수를 저장
+    int startCount = 0;
+    int endCount = 0;
+
+    // 파일 열기
+    fp = fopen("maze.txt", "r");
+
+    // 파일이 없으면 오류 출력
+    if (fp == NULL)
+    {
+        printf("파일을 찾을 수 없습니다.\n");
+        return false;
+    }
+
+    // 행과 열 읽기
+    fscanf(fp, "%d %d", row, col);
+
+    // 행 또는 열이 0 이하이면 잘못된 파일
+    if (*row <= 0 || *col <= 0)
+    {
+        printf("미로 크기가 올바르지 않습니다.\n");
+        fclose(fp);
+        return false;
+    }
+
+    // 미로 입력
+    for (int i = 0; i < *row; i++)
+    {
+        for (int j = 0; j < *col; j++)
+        {
+            fscanf(fp, " %c", &maze[i][j]);
+
+            // 시작점인지 확인
+            if (maze[i][j] == 'S')
+                startCount++;
+
+            // 도착점인지 확인
+            else if (maze[i][j] == 'E')
+                endCount++;
+
+            // 길 또는 벽이면 정상
+            else if (maze[i][j] == '.' || maze[i][j] == '#')
+            {
+                // 아무 작업 안 함
+            }
+
+            // 다른 문자는 잘못된 입력
+            else
+            {
+                printf("잘못된 문자가 포함되어 있습니다.\n");
+                fclose(fp);
+                return false;
+            }
+        }
+    }
+
+    // 시작점이 없거나 여러 개
+    if (startCount != 1)
+    {
+        printf("시작 지점(S)이 올바르지 않습니다.\n");
+        fclose(fp);
+        return false;
+    }
+
+    // 도착점이 없거나 여러 개
+    if (endCount != 1)
+    {
+        printf("도착 지점(E)이 올바르지 않습니다.\n");
+        fclose(fp);
+        return false;
+    }
+
+    // 파일 닫기
+    fclose(fp);
+
+    return true;
+}
+
+int main()
+{
+    char maze[MAX][MAX];
+    int row, col;
+
+    // 미로 읽기 실패 시 종료
+    if (!readMazeFromFile(maze, &row, &col))
+    {
+        printf("프로그램을 종료합니다.\n");
+        return 0;
+    }
+
+    printf("미로를 정상적으로 읽었습니다.\n");
+
+    // 읽은 미로 출력
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            printf("%c", maze[i][j]);
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
