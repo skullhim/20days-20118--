@@ -1,1 +1,99 @@
+#include <stdio.h>
+#include <string.h>
 
+struct Player {
+    char name[20];
+    int hp;
+    int maxHp;
+    int attack;
+    int defense;
+};
+
+struct Monster {
+    char name[20];
+    int hp;
+    int attack;
+    int defense;
+};
+
+// 플레이어 초기화
+void initPlayer(struct Player *player)
+{
+    printf("플레이어 이름을 입력하세요: ");
+    scanf("%19s", player->name);
+
+    player->maxHp = 100;
+    player->hp = 100;
+    player->attack = 20;
+    player->defense = 10;
+}
+
+// 전투
+int battle(struct Player *player, struct Monster *monster)
+{
+    printf("\n=== 전투 시작! ===\n");
+    printf("%s가 나타났습니다!\n", monster->name);
+
+    while (player->hp > 0 && monster->hp > 0)
+    {
+        printf("\n%s HP: %d\n", monster->name, monster->hp);
+        printf("%s HP: %d\n", player->name, player->hp);
+
+        // 플레이어 공격
+        monster->hp -= player->attack;
+
+        if (monster->hp <= 0)
+        {
+            monster->hp = 0;
+            printf("%s를 물리쳤습니다!\n", monster->name);
+            return 1;
+        }
+
+        // 몬스터 공격
+        player->hp -= monster->attack - player->defense;
+
+        if (player->hp <= 0)
+        {
+            player->hp = 0;
+            printf("%s가 쓰러졌습니다...\n", player->name);
+            return 0;
+        }
+    }
+
+    return 0;
+}
+
+// 아이템 획득
+void getItem(struct Player *player)
+{
+    printf("\n=== 아이템 획득! ===\n");
+    printf("회복 물약을 발견했습니다!\n");
+
+    player->hp += 30;
+
+    if (player->hp > player->maxHp)
+        player->hp = player->maxHp;
+
+    printf("HP가 회복되었습니다. 현재 HP: %d\n", player->hp);
+}
+
+int main()
+{
+    struct Player player;
+
+    struct Monster monster = {
+        "고블린",
+        50,
+        15,
+        5
+    };
+
+    initPlayer(&player);
+
+    if (battle(&player, &monster))
+    {
+        getItem(&player);
+    }
+
+    return 0;
+}
